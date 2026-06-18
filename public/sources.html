@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>信源配置 - 农机行业通</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="app-layout">
+  <div id="sidebar-slot"></div>
+
+  <main class="main-content">
+    <header class="page-header">
+      <h1 class="page-title">信源配置</h1>
+      <button class="btn btn-primary" onclick="openAddModal()">+ 添加信源</button>
+    </header>
+
+    <div class="page-body">
+      <div class="table-card">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>名称</th>
+              <th>类型</th>
+              <th>订阅源</th>
+              <th>开启</th>
+              <th>拉取数</th>
+              <th>翻译</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="sources-tbody">
+            <tr><td colspan="7" style="text-align:center;color:var(--text-muted);padding:30px">加载中...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Add / Edit Modal -->
+<div class="modal-overlay hidden" id="modal-overlay">
+  <div class="modal">
+    <h2 class="modal-title" id="modal-title">添加信源</h2>
+    <input type="hidden" id="edit-id" value="">
+
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="form-group">
+        <label class="form-label">信源名称 *</label>
+        <input type="text" class="form-input" id="f-name" placeholder="例：AgFunder News">
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">类型 *</label>
+          <select class="form-select" id="f-type" onchange="onTypeChange()">
+            <option value="rsshub">RSSHub</option>
+            <option value="rss">RSS</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" id="url-label">RSSHub 路由 *</label>
+          <input type="text" class="form-input" id="f-url" placeholder="/weibo/search/keyword/农用无人机">
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group" id="limit-group">
+          <label class="form-label">拉取条数</label>
+          <input type="number" class="form-input" id="f-limit" value="20" min="1" max="100">
+        </div>
+        <div class="form-group">
+          <label class="form-label">翻译（中文）</label>
+          <div class="flex flex-center gap-8" style="height:38px">
+            <label class="toggle"><input type="checkbox" id="f-translate"><span class="toggle-slider"></span></label>
+            <span class="text-muted text-sm">开启后使用 AI 翻译</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">状态</label>
+        <div class="flex flex-center gap-8" style="height:38px">
+          <label class="toggle"><input type="checkbox" id="f-enabled" checked><span class="toggle-slider"></span></label>
+          <span class="text-muted text-sm">开启后参与拉取</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal()">取消</button>
+      <button class="btn btn-primary" onclick="saveSource()">保存</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="/js/api.js"></script>
+<script src="/js/sources.js"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+node_modules
+.git
+.gitignore
+*.log
+data/*.db
+uploads/*
+public/renders/*
+提供给AI的参考资料

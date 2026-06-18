@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>系统配置 - 农机行业通</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="app-layout">
+  <div id="sidebar-slot"></div>
+
+  <main class="main-content">
+    <header class="page-header">
+      <h1 class="page-title">系统配置</h1>
+      <button class="btn btn-primary" onclick="saveConfig()">保存配置</button>
+    </header>
+
+    <div class="page-body">
+
+      <!-- RSSHub -->
+      <div class="config-section">
+        <div class="config-section-header">
+          <span class="config-section-icon">📡</span>
+          <div>
+            <div class="config-section-title">RSSHub 配置</div>
+            <div class="config-section-desc">本地或远程 RSSHub 实例的访问地址</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">RSSHub Base URL</label>
+          <input type="text" class="form-input" id="rsshub_base_url" placeholder="http://localhost:1200">
+          <span class="form-hint">RSSHub 类型的信源将使用此地址 + 路由拼接访问</span>
+        </div>
+      </div>
+
+      <!-- 翻译模型 -->
+      <div class="config-section">
+        <div class="config-section-header">
+          <span class="config-section-icon">🌐</span>
+          <div>
+            <div class="config-section-title">翻译模型</div>
+            <div class="config-section-desc">用于将英文资讯翻译为中文</div>
+          </div>
+        </div>
+        <div class="form-grid-3">
+          <div class="form-group">
+            <label class="form-label">模型名称</label>
+            <input type="text" class="form-input" id="translate_llm_model" placeholder="gpt-4o-mini">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Base URL</label>
+            <input type="text" class="form-input" id="translate_llm_baseurl" placeholder="https://api.openai.com/v1">
+          </div>
+          <div class="form-group">
+            <label class="form-label">API Key</label>
+            <input type="password" class="form-input" id="translate_llm_key" placeholder="sk-...">
+          </div>
+          <div class="form-group form-full">
+            <label class="form-label">系统提示词（留空使用默认）</label>
+            <textarea class="form-textarea" id="translate_llm_prompt" placeholder="默认：你是一名专业翻译..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- 资讯编辑模型 -->
+      <div class="config-section">
+        <div class="config-section-header">
+          <span class="config-section-icon">✏️</span>
+          <div>
+            <div class="config-section-title">资讯编辑模型</div>
+            <div class="config-section-desc">AINews 功能使用，将资讯结构化处理后写入文档</div>
+          </div>
+        </div>
+        <div class="form-grid-3">
+          <div class="form-group">
+            <label class="form-label">模型名称</label>
+            <input type="text" class="form-input" id="edit_llm_model" placeholder="gpt-4o">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Base URL</label>
+            <input type="text" class="form-input" id="edit_llm_baseurl" placeholder="https://api.openai.com/v1">
+          </div>
+          <div class="form-group">
+            <label class="form-label">API Key</label>
+            <input type="password" class="form-input" id="edit_llm_key" placeholder="sk-...">
+          </div>
+          <div class="form-group form-full">
+            <label class="form-label">系统提示词（留空使用默认）</label>
+            <textarea class="form-textarea" id="edit_llm_prompt" placeholder="默认：你是一名专注于农业科技的资讯编辑..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- 内容创作模型 -->
+      <div class="config-section">
+        <div class="config-section-header">
+          <span class="config-section-icon">✦</span>
+          <div>
+            <div class="config-section-title">内容创作模型</div>
+            <div class="config-section-desc">MakeContent 功能使用，生成社媒内容</div>
+          </div>
+        </div>
+        <div class="form-grid-3">
+          <div class="form-group">
+            <label class="form-label">模型名称</label>
+            <input type="text" class="form-input" id="create_llm_model" placeholder="gpt-4o">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Base URL</label>
+            <input type="text" class="form-input" id="create_llm_baseurl" placeholder="https://api.openai.com/v1">
+          </div>
+          <div class="form-group">
+            <label class="form-label">API Key</label>
+            <input type="password" class="form-input" id="create_llm_key" placeholder="sk-...">
+          </div>
+          <div class="form-group form-full">
+            <label class="form-label">系统提示词（留空使用默认）</label>
+            <textarea class="form-textarea" id="create_llm_prompt" placeholder="默认：你是一名专注于农业科技领域的内容创作者..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- 飞书配置 (Coming Soon) -->
+      <div class="config-section">
+        <div class="config-section-header">
+          <span class="config-section-icon">📋</span>
+          <div>
+            <div class="config-section-title">飞书知识库 <span class="badge badge-coming">即将开放</span></div>
+            <div class="config-section-desc">AINews 功能将资讯写入飞书知识库文档（可提前填写，功能上线后生效）</div>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">App ID</label>
+            <input type="text" class="form-input" id="feishu_app_id" placeholder="cli_a9...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">App Secret</label>
+            <input type="password" class="form-input" id="feishu_app_secret" placeholder="k7...Lg">
+          </div>
+          <div class="form-group">
+            <label class="form-label">知识库 Space ID</label>
+            <input type="text" class="form-input" id="feishu_space_id" placeholder="75...68">
+          </div>
+          <div class="form-group">
+            <label class="form-label">父节点 Token</label>
+            <input type="text" class="form-input" id="feishu_parent_node_token" placeholder="CG...bg">
+          </div>
+        </div>
+      </div>
+
+      <!-- 屏蔽关键词 -->
+      <div class="config-section">
+        <div class="config-section-header">
+          <span class="config-section-icon">🚫</span>
+          <div>
+            <div class="config-section-title">屏蔽关键词</div>
+            <div class="config-section-desc">包含以下关键词的资讯将在拉取时自动过滤，英文逗号分隔</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">关键词列表</label>
+          <textarea class="form-textarea" id="blacklist_keywords" rows="3"
+            placeholder="广告,推广,招聘,二手,理财" style="min-height:70px"></textarea>
+          <span class="form-hint">多个关键词用英文逗号 , 分隔，不区分大小写</span>
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end">
+        <button class="btn btn-primary" onclick="saveConfig()">保存所有配置</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="toast-container"></div>
+<script src="/js/api.js"></script>
+<script src="/js/config.js"></script>
+</body>
+</html>

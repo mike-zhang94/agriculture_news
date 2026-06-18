@@ -1,0 +1,66 @@
+services:
+
+  # ===== 农机行业通 主应用 =====
+  agritech-news:
+    build: .
+    container_name: agritech-news
+    restart: always
+    ports:
+      - '3737:3737'
+    environment:
+      NODE_ENV: production
+      PORT: 3737
+      # 容器内通过服务名访问 RSSHub，无需改动
+      RSSHUB_BASE_URL: 'http://rsshub:1200'
+    volumes:
+      - agritech-data:/app/data
+      - agritech-uploads:/app/uploads
+      - agritech-renders:/app/public/renders
+    depends_on:
+      rsshub:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://localhost:3737/']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ===== RSSHub =====
+  rsshub:
+    image: diygod/rsshub
+    container_name: agritech-rsshub
+    restart: always
+    ports:
+      - '3810:1200'   # 外部使用 3810，避免与常见端口冲突
+    environment:
+      NODE_ENV: production
+      CACHE_TYPE: redis
+      REDIS_URL: 'redis://redis:6379/'
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:1200/healthz']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  # ===== Redis (RSSHub 缓存) =====
+  redis:
+    image: redis:7-alpine
+    container_name: agritech-redis
+    restart: always
+    volumes:
+      - agritech-redis:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 5s
+
+volumes:
+  agritech-data:
+  agritech-uploads:
+  agritech-renders:
+  agritech-redis:

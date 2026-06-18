@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>创作内容 - 农机行业通</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="app-layout">
+  <div id="sidebar-slot"></div>
+
+  <main class="main-content">
+    <header class="page-header">
+      <div class="flex flex-center gap-8">
+        <a href="/" class="btn btn-ghost btn-sm">← 返回</a>
+        <h1 class="page-title">创作内容</h1>
+      </div>
+    </header>
+
+    <div class="page-body" style="max-width:900px">
+
+      <!-- 资讯信息 -->
+      <div class="news-info-card" id="news-info-card">
+        <div class="text-muted text-sm" style="margin-bottom:6px">资讯来源</div>
+        <div class="news-info-title" id="ni-title">请从资讯列表选择一条资讯进入本页面</div>
+        <div class="news-info-desc" id="ni-desc"></div>
+        <a class="news-info-link" id="ni-link" href="#" target="_blank" rel="noopener"></a>
+      </div>
+
+      <!-- 图片上传 -->
+      <div class="make-section">
+        <div class="make-section-title">📸 添加配图</div>
+        <div class="upload-zone" id="upload-zone"
+          onclick="document.getElementById('file-input').click()"
+          ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+          <div class="upload-zone-icon">🖼️</div>
+          <div class="upload-zone-text"><strong>点击选择</strong>或拖拽图片到此处</div>
+          <div class="upload-zone-text text-sm mt-4">支持 JPG / PNG / WebP，每张不超过 20MB</div>
+        </div>
+        <input type="file" id="file-input" multiple accept="image/*" style="display:none" onchange="onFileSelect(event)">
+        <div class="image-previews" id="image-previews"></div>
+      </div>
+
+      <!-- 补充信息 -->
+      <div class="make-section">
+        <div class="make-section-title">📝 补充信息（选填）</div>
+        <textarea class="form-textarea" id="supplementary"
+          placeholder="可以补充你希望在内容中重点体现的角度、观点或背景信息..."
+          style="min-height:80px"></textarea>
+      </div>
+
+      <!-- 生成按钮 -->
+      <div style="text-align:center;margin:20px 0">
+        <button class="btn btn-accent" id="generate-btn" onclick="generateContent()" style="padding:12px 32px;font-size:15px">
+          ✦ 创作内容
+        </button>
+      </div>
+
+      <!-- 生成结果（隐藏直到生成） -->
+      <div id="content-section" class="hidden">
+        <div class="make-section">
+          <div class="make-section-title">✎ 编辑生成内容</div>
+          <div class="content-fields">
+            <div class="fields-grid">
+              <div>
+                <div class="content-field-label">封面单词 cover_word</div>
+                <textarea class="content-field-input" id="f-cover-word" rows="1"></textarea>
+              </div>
+              <div>
+                <div class="content-field-label">封面 Emoji</div>
+                <textarea class="content-field-input" id="f-cover-emoji" rows="1"></textarea>
+              </div>
+              <div>
+                <div class="content-field-label">主标题 cover_title（≤15字）</div>
+                <textarea class="content-field-input" id="f-cover-title" rows="2"></textarea>
+              </div>
+              <div>
+                <div class="content-field-label">封面描述 cover_description（≤20字）</div>
+                <textarea class="content-field-input" id="f-cover-desc" rows="2"></textarea>
+              </div>
+              <div class="full">
+                <div class="content-field-label">内容标题 title（≤20字）</div>
+                <textarea class="content-field-input" id="f-title" rows="2"></textarea>
+              </div>
+              <div class="full">
+                <div class="content-field-label">内容正文 content</div>
+                <textarea class="content-field-input tall" id="f-content"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div style="text-align:center;margin-top:20px">
+            <button class="btn btn-primary" id="render-btn" onclick="renderContent()" style="padding:10px 28px">
+              🖼 渲染图片
+            </button>
+          </div>
+        </div>
+
+        <!-- 预览 -->
+        <div id="preview-section" class="hidden">
+          <div class="make-section">
+            <div class="make-section-title">👁 内容预览</div>
+            <p class="text-sm text-muted" style="margin-bottom:12px">点击右侧文字可复制</p>
+            <div class="xhs-preview-wrap">
+              <div class="xhs-left" id="xhs-left">
+                <img id="xhs-img" src="" alt="预览">
+                <button class="xhs-nav-btn xhs-nav-prev" onclick="prevSlide()">‹</button>
+                <button class="xhs-nav-btn xhs-nav-next" onclick="nextSlide()">›</button>
+                <div class="xhs-dots" id="xhs-dots"></div>
+                <span class="xhs-counter" id="xhs-counter"></span>
+              </div>
+              <div class="xhs-right">
+                <div class="xhs-title" id="xhs-title" onclick="copyText(this)"></div>
+                <div class="copy-hint">← 点击复制标题</div>
+                <div class="divider"></div>
+                <div class="xhs-content" id="xhs-content" onclick="copyText(this)"></div>
+                <div class="copy-hint">↑ 点击复制正文</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /page-body -->
+  </main>
+</div>
+
+<div id="toast-container"></div>
+<script src="/js/api.js"></script>
+<script src="/js/makecontent.js"></script>
+</body>
+</html>
