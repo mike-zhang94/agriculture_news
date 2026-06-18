@@ -5,3 +5,4 @@ public/renders/
 *.log
 .env
 提供给AI的参考资料/
+CLAUDE.md
